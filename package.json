@@ -1,0 +1,17 @@
+{
+  "name": "fear-of-corn-srt-parser",
+  "version": "1.0.0",
+  "description": "Outputs JSON representations of SRT files for Fear of Corn",
+  "main": "index.js",
+  "author": "Jake Bohlken",
+  "license": "MIT",
+  "bin": {
+    "foc-sp": "bin/foc-sp"
+  },
+  "dependencies": {
+    "minimist": "^1.2.5",
+    "ora": "^5.1.0",
+    "parse-srt": "^1.0.0-alpha"
+  },
+  "devDependencies": {}
+}
