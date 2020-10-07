@@ -2,9 +2,23 @@
   "name": "fear-of-corn-srt-parser",
   "version": "1.0.0",
   "description": "Outputs JSON representations of SRT files for Fear of Corn",
-  "main": "index.js",
   "author": "Jake Bohlken",
   "license": "MIT",
+  "homepage": "https://github.com/bohlken34/fear-of-corn-srt-parser#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bohlken34/fear-of-corn-srt-parser.git"
+  },
+  "engines": {
+    "node": ">=10"
+  },
+  "keywords": [
+    "fear of corn",
+    "srt",
+    "srt parser",
+    "srt to json"
+  ],
+  "preferGlobal": true,
   "bin": {
     "foc-sp": "bin/foc-sp"
   },
