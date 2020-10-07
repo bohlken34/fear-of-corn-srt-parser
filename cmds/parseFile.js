@@ -12,7 +12,7 @@ function massageData(subs, speaker) {
     }
     return subs.map(sub => ({
         "Name": String(sub.id),
-        "Delay -n": sub.start,
+        "Delay -n": sub.start.toFixed(3),
         "Speaker": outputSpeaker,
         "Subtitle Text": sub.text,
         "bCaption": false
