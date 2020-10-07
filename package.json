@@ -1,6 +1,6 @@
 {
-  "name": "@foc/sp-cli",
-  "version": "1.0.1",
+  "name": "@bohlken34/focsp-cli",
+  "version": "1.0.2",
   "description": "Outputs JSON representations of SRT files for Fear of Corn",
   "author": "Jake Bohlken",
   "license": "MIT",
@@ -20,7 +20,7 @@
   ],
   "preferGlobal": true,
   "bin": {
-    "foc-sp": "bin/foc-sp"
+    "focsp": "bin/foc-sp"
   },
   "dependencies": {
     "minimist": "^1.2.5",

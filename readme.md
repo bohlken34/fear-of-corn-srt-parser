@@ -1,17 +1,17 @@
 To install, run:
 
-`npm install -g @foc/sp-cli`
+`npm install -g @bohlken34/focsp-cli`
 
 To run:
 
-`foc-sp [command] <options>`
+`focsp [command] <options>`
 
 for example:
 ```
-foc-sp version
-foc-sp help
+focsp version
+focsp help
 
-foc-sp parse <options>
+focsp parse <options>
       
       --file, -f ......... the file to parse
       --all, -a .......... parse all files in folder
