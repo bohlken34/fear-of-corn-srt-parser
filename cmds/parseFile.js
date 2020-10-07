@@ -4,11 +4,16 @@ const parseSRT = require('parse-srt');
 const error = require('../utils/error');
 const ora = require('ora');
 
-function massageData(subs) {
+function massageData(subs, speaker) {
+    let outputSpeaker = 'Valerie';
+
+    if (typeof speaker === 'string') {
+        outputSpeaker = speaker;
+    }
     return subs.map(sub => ({
         "Name": String(sub.id),
         "Delay -n": sub.start,
-        "Speaker": "Valerie",
+        "Speaker": outputSpeaker,
         "Subtitle Text": sub.text,
         "bCaption": false
     }));
@@ -46,11 +51,11 @@ async function getSrtFiles(dir) {
         .filter( Boolean );
 }
 
-async function convertFileToJSON(filePath) {
+async function convertFileToJSON(filePath, speaker) {
     const fileContents = await fs.readFile(filePath, 'utf8');
 
     const subs = parseSRT(fileContents);
-    const focSubs = massageData(subs);
+    const focSubs = massageData(subs, speaker);
 
     const fileName = path.basename(filePath, path.extname(filePath));
 
@@ -66,6 +71,7 @@ module.exports = async (args) => {
     const file = args.file || args.f;
     const all = args.all || args.a;
     const recursive = args.recursive || args.r;
+    const speaker = args.speaker || args.s;
 
     if (file && (all || recursive)) {
         spinner.stop();
@@ -79,7 +85,7 @@ module.exports = async (args) => {
 
     if (file) {
         try {
-            await convertFileToJSON(file);
+            await convertFileToJSON(file, speaker);
         } catch (e) {
             spinner.stop();
             error(e, true);
@@ -98,7 +104,7 @@ module.exports = async (args) => {
 
         for (const file of files) {
             try {
-                await convertFileToJSON(file);
+                await convertFileToJSON(file, speaker);
             } catch (e) {
                 spinner.stop();
                 error(e, true);

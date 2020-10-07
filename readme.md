@@ -14,6 +14,7 @@ focsp help
 focsp parse <options>
       
       --file, -f ......... the file to parse
+      --speaker, -s ...... sets the default speaker
       --all, -a .......... parse all files in folder
       --recursive, -r .... used in combination with --all; include subfolders
 ```
