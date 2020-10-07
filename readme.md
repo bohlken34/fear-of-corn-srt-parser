@@ -1,6 +1,6 @@
 To install, run:
 
-`npm install -g fear-of-corn-srt-parser`
+`npm install -g @foc/sp-cli`
 
 To run:
 

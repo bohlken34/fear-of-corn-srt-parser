@@ -1,6 +1,6 @@
 {
-  "name": "fear-of-corn-srt-parser",
-  "version": "1.0.0",
+  "name": "@foc/sp-cli",
+  "version": "1.0.1",
   "description": "Outputs JSON representations of SRT files for Fear of Corn",
   "author": "Jake Bohlken",
   "license": "MIT",
