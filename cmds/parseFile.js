@@ -4,6 +4,14 @@ const parseSRT = require('parse-srt');
 const error = require('../utils/error');
 const ora = require('ora');
 const { getFilesRecursively } = require('../utils/fileGetter');
+const colors = require('colors/safe');
+
+colors.setTheme({
+    warn: 'yellow',
+    success: 'green',
+    file: 'cyan',
+    error: 'red',
+});
 
 function massageData(subs, speaker) {
     let outputSpeaker = 'Valerie';
@@ -61,12 +69,12 @@ module.exports = async (args) => {
 
     if (file && (all || recursive)) {
         spinner.stop();
-        error("You can't use --file with --all or --recursive", true);
+        error(colors.error("You can't use --file with --all or --recursive"), true);
     }
 
     if (recursive && !all) {
         spinner.stop();
-        error("You can't use --recursive without --all", true);
+        error(colors.error("You can't use --recursive without --all"), true);
     }
 
     if (file) {
@@ -74,10 +82,11 @@ module.exports = async (args) => {
             await convertFileToJSON(file, speaker);
         } catch (e) {
             spinner.stop();
-            error(e, true);
+            error(colors.error(e), true);
         }
 
         spinner.stop();
+        console.log(colors.green('✅ Done!'));
         process.exit(1);
     }
 
@@ -97,6 +106,7 @@ module.exports = async (args) => {
             }
         }
 
+        console.log(colors.green('✅ Done!'));
         process.exit(1);
     }
 };
