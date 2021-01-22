@@ -2,7 +2,7 @@ const fs = require("fs").promises;
 const error = require("../utils/error");
 const ora = require("ora");
 const { getFilesRecursively } = require("../utils/fileGetter");
-import { subtract, format } from "mathjs";
+const { subtract, format } = require('mathjs');
 
 async function getJsonObjectFromFile(filePath) {
   const fileContents = await fs.readFile(filePath, "utf8");
