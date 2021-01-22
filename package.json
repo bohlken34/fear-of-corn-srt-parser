@@ -23,6 +23,7 @@
     "focsp": "bin/foc-sp"
   },
   "dependencies": {
+    "colors": "^1.4.0",
     "mathjs": "^9.0.0",
     "minimist": "^1.2.5",
     "ora": "^5.1.0",
