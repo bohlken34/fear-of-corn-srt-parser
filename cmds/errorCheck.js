@@ -4,6 +4,7 @@ const ora = require('ora');
 const { getFilesRecursively } = require('../utils/fileGetter');
 const { subtract, format } = require('mathjs');
 const colors = require('colors/safe');
+const isIterable = require('../utils/isIterable');
 
 colors.setTheme({
   warn: 'yellow',
@@ -93,6 +94,10 @@ module.exports = async (args) => {
         console.log(colors.blue(`=== ${files[i]} ===`));
       }
       const fileObject = await getJsonObjectFromFile(files[i]);
+      if (!isIterable(fileObject)) {
+        console.log('notice      ' + colors.yellow('[skipped]'));
+        continue;
+      }
       checkLength(fileObject, maxChars);
       checkInterval(fileObject, minInterval);
     } catch (e) {
