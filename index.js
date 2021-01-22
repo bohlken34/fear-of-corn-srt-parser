@@ -17,6 +17,9 @@ module.exports = () => {
         case 'parse':
             require('./cmds/parseFile')(args);
             break;
+        case 'check':
+            require('./cmds/errorCheck')(args);
+            break;
         case 'version':
             require('./cmds/version')(args);
             break;

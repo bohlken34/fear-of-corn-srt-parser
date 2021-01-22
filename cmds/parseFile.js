@@ -3,6 +3,7 @@ const fs = require('fs').promises;
 const parseSRT = require('parse-srt');
 const error = require('../utils/error');
 const ora = require('ora');
+const { getFilesRecursively } = require('../utils/fileGetter');
 
 function massageData(subs, speaker) {
     let outputSpeaker = 'Valerie';
@@ -19,39 +20,24 @@ function massageData(subs, speaker) {
     }));
 }
 
-async function getSrtFilesRecursively(dir) {
-    let files = await fs.readdir(dir);
-    files = await Promise.all(files.map(async file => {
-        const filePath = path.join(dir, file);
-        const stats = await fs.stat(filePath);
-        if (stats.isDirectory()) {
-            return getSrtFilesRecursively(filePath);
-        } else if (stats.isFile() && path.extname(filePath) === '.srt') {
-            return filePath;
-        }
-    }));
-
-    return files
-        .reduce((all, folderContents) => all.concat(folderContents), [])
-        .filter( Boolean );
-}
-
 async function getSrtFiles(dir) {
     let files = await fs.readdir(dir);
-    files = await Promise.all(files.map(async file => {
-        const filePath = path.join(dir, file);
-        const stats = await fs.stat(filePath);
-        if (stats.isFile() && path.extname(filePath) === '.srt') {
-            return filePath;
-        }
-    }));
+    files = await Promise.all(
+      files.map(async (file) => {
+          const filePath = path.join(dir, file);
+          const stats = await fs.stat(filePath);
+          if (stats.isFile() && path.extname(filePath) === '.srt') {
+              return filePath;
+          }
+      })
+    );
 
     return files
-        .reduce((all, folderContents) => all.concat(folderContents), [])
-        .filter( Boolean );
+      .reduce((all, folderContents) => all.concat(folderContents), [])
+      .filter(Boolean);
 }
 
-async function convertFileToJSON(filePath, speaker) {
+export async function convertFileToJSON(filePath, speaker) {
     const fileContents = await fs.readFile(filePath, 'utf8');
 
     const subs = parseSRT(fileContents);
@@ -60,8 +46,8 @@ async function convertFileToJSON(filePath, speaker) {
     const fileName = path.basename(filePath, path.extname(filePath));
 
     await fs.writeFile(
-        `${path.dirname(filePath)}/${fileName}.json`,
-        JSON.stringify(focSubs)
+      `${path.dirname(filePath)}/${fileName}.json`,
+      JSON.stringify(focSubs)
     );
 }
 
@@ -75,12 +61,12 @@ module.exports = async (args) => {
 
     if (file && (all || recursive)) {
         spinner.stop();
-        error('You can\'t use --file with --all or --recursive', true);
+        error("You can't use --file with --all or --recursive", true);
     }
 
     if (recursive && !all) {
         spinner.stop();
-        error('You can\'t use --recursive without --all', true);
+        error("You can't use --recursive without --all", true);
     }
 
     if (file) {
@@ -97,8 +83,8 @@ module.exports = async (args) => {
 
     if (all) {
         const files = recursive
-            ? await getSrtFilesRecursively(process.cwd())
-            : await getSrtFiles(process.cwd())
+          ? await getFilesRecursively(process.cwd(), '.srt')
+          : await getSrtFiles(process.cwd());
 
         console.log(files);
 
@@ -113,4 +99,4 @@ module.exports = async (args) => {
 
         process.exit(1);
     }
-}
+};
