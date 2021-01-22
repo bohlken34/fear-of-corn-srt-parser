@@ -86,7 +86,7 @@ module.exports = async (args) => {
         }
 
         spinner.stop();
-        console.log(colors.green('✅ Done!'));
+        console.log(colors.green('success ✅  Done!'));
         process.exit(1);
     }
 
@@ -106,7 +106,7 @@ module.exports = async (args) => {
             }
         }
 
-        console.log(colors.green('✅ Done!'));
+        console.log(colors.green('success ✅  Done!'));
         process.exit(1);
     }
 };

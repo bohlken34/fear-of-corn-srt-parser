@@ -24,7 +24,7 @@ function checkLength(fileObject, maxLength) {
     if (subLength > maxLength) {
       error(
         colors.warn(
-          ` 🍆 Length warning: Subtitle ${subTitle['Name']} contains ${subLength} characters.`
+          `warning 🍆  Subtitle ${subTitle['Name']} contains ${subLength} characters and is too long.  😏`
         )
       );
     }
@@ -45,7 +45,7 @@ function checkInterval(fileObject, minInterval) {
     if (formattedDiff < minInterval) {
       error(
         colors.warn(
-          ` ⏰ Time warning: Interval between subtitles ${
+          `warning ⏰  Interval between subtitles ${
             fileObject[i - 1]['Name']
           } and ${fileObject[i]['Name']} is ${formattedDiff}s`
         )
@@ -88,9 +88,9 @@ module.exports = async (args) => {
   for (let i = 0; i < files.length; i++) {
     try {
       if (i === 0) {
-        console.log(colors.blue(`\n[${files[i]}]`));
+        console.log(colors.blue(`\n === ${files[i]} ===`));
       } else {
-        console.log(colors.blue(`[${files[i]}]`));
+        console.log(colors.blue(`=== ${files[i]} ===`));
       }
       const fileObject = await getJsonObjectFromFile(files[i]);
       checkLength(fileObject, maxChars);
@@ -101,5 +101,6 @@ module.exports = async (args) => {
     }
   }
 
-  console.log(colors.trap('Done!'));
+  console.log(colors.green('success ✅  Done!'));
+  process.exit(1);
 };
