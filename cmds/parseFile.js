@@ -37,7 +37,7 @@ async function getSrtFiles(dir) {
       .filter(Boolean);
 }
 
-export async function convertFileToJSON(filePath, speaker) {
+async function convertFileToJSON(filePath, speaker) {
     const fileContents = await fs.readFile(filePath, 'utf8');
 
     const subs = parseSRT(fileContents);

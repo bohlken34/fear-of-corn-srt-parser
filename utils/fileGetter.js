@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs').promises;
 
-export async function getFilesRecursively(dir, fileExt) {
+const getFilesRecursively = async (dir, fileExt) => {
   let files = await fs.readdir(dir);
   files = await Promise.all(files.map(async file => {
     const filePath = path.join(dir, file);
@@ -17,3 +17,5 @@ export async function getFilesRecursively(dir, fileExt) {
     .reduce((all, folderContents) => all.concat(folderContents), [])
     .filter( Boolean );
 }
+
+module.exports = { getFilesRecursively };
