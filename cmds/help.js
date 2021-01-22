@@ -14,6 +14,13 @@ const menus = {
       --all, -a .......... parse all files in folder
       --recursive, -r .... used in combination with --all; include subfolders
     `,
+
+    check: `
+      foc-sp check <options>
+      
+      --maxChar, -c ...... maximum number of characters in a subtitle (required)
+      --interval, -i ..... minimum time interval between subtitles (required)
+    `
 }
 
 module.exports = (args) => {
