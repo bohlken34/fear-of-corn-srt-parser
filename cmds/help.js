@@ -3,6 +3,7 @@ const menus = {
       foc-sp [command] <options>
       
       parse ............... parses a file or folder of *.srt to JSON
+      check ............... performs error checking of JSON files
       version ............. show package version
       help ................ show help menu for a command`,
 
