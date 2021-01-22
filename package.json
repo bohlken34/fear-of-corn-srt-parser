@@ -1,6 +1,6 @@
 {
   "name": "@bohlken34/focsp-cli",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Outputs JSON representations of SRT files for Fear of Corn",
   "author": "Jake Bohlken",
   "license": "MIT",
