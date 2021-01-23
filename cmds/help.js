@@ -1,5 +1,5 @@
 const menus = {
-    main: `
+  main: `
       foc-sp [command] <options>
       
       parse ............... parses a file or folder of *.srt to JSON
@@ -7,7 +7,7 @@ const menus = {
       version ............. show package version
       help ................ show help menu for a command`,
 
-    parse: `
+  parse: `
       foc-sp parse <options>
       
       --file, -f ......... the file to parse
@@ -16,19 +16,17 @@ const menus = {
       --recursive, -r .... used in combination with --all; include subfolders
     `,
 
-    check: `
+  check: `
       foc-sp check <options>
       
       --maxChar, -c ...... maximum number of characters in a subtitle (required)
       --interval, -i ..... minimum time interval between subtitles (required)
       --hideSkipped, -s .. hide skipped files
-    `
-}
+    `,
+};
 
-module.exports = (args) => {
-    const subCmd = args._[0] === 'help'
-        ? args._[1]
-        : args._[0]
+module.exports = (arguments_) => {
+  const subCmd = arguments_._[0] === 'help' ? arguments_._[1] : arguments_._[0];
 
-    console.log(menus[subCmd] || menus.main);
-}
+  console.log(menus[subCmd] || menus.main);
+};
