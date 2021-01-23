@@ -21,16 +21,34 @@ async function getJsonObjectFromFile(filePath) {
 
 function checkLength(fileObject, maxLength) {
   for (const subTitle of fileObject) {
-    const textToParse = subTitle['Subtitle Text'].trim();
+    const textToParse = subTitle['Subtitle Text'];
     const subLength = textToParse.length;
     if (subLength > maxLength) {
       error(
         colors.warn(
-          `warning 🍆  Subtitle ${subTitle['Name']} contains ${subLength} characters and is too long.  😏`
-        )
+          `[warning] 🍆  `) + `Subtitle ${subTitle['Name']} contains ${subLength} characters and is too long.  😏`
+      );
+    }
+
+    if (testWhiteSpace(textToParse.charAt(0))) {
+      error(
+        colors.warn(
+          `[warning] ➡️   `) + `Subtitle ${subTitle['Name']} has a whitespace character at the beginning.`
+      );
+    }
+
+    if (testWhiteSpace(textToParse.slice(-1))) {
+      error(
+        colors.warn(
+          `[warning] ⬅️   `) + `Subtitle ${subTitle['Name']} has a whitespace character at the end.`
       );
     }
   }
+}
+
+const testWhiteSpace = x => {
+  const whiteRegex = new RegExp(/^\s$/);
+  return whiteRegex.test(x.charAt(0));
 }
 
 function checkInterval(fileObject, minInterval) {
@@ -47,20 +65,18 @@ function checkInterval(fileObject, minInterval) {
     if (formattedDiff < minInterval) {
       error(
         colors.warn(
-          `warning ⏰  Interval between subtitles ${
+          `[warning] ⏰  `) + `Interval between subtitles ${
             fileObject[i - 1]['Name']
           } and ${fileObject[i]['Name']} is ${formattedDiff}s`
-        )
       );
     }
   }
 }
 
 module.exports = async (args) => {
-  const spinner = ora().start();
-
   const maxChars = Number(args.maxChar || args.c);
   const minInterval = Number(args.interval || args.i);
+  const hideSkipped = Boolean(args.hideSkipped || args.s);
 
   let hasError = false;
   if (!maxChars) {
@@ -89,24 +105,23 @@ module.exports = async (args) => {
 
   for (let i = 0; i < files.length; i++) {
     try {
-      if (i === 0) {
-        console.log(colors.dim(`\n=== ${files[i]} ===`));
+      const fileObject = await getJsonObjectFromFile(files[i]);
+
+      if (!isIterable(fileObject)) {
+        if (!hideSkipped) {
+          console.log(colors.dim(`[skipped]     === ${files[i]} ===`));
+        }
+        continue;
       } else {
         console.log(colors.dim(`=== ${files[i]} ===`));
-      }
-      const fileObject = await getJsonObjectFromFile(files[i]);
-      if (!isIterable(fileObject)) {
-        console.log('notice      ' + colors.yellow('[skipped]'));
-        continue;
       }
       checkLength(fileObject, maxChars);
       checkInterval(fileObject, minInterval);
     } catch (e) {
-      spinner.stop();
       error(colors.error(e), true);
     }
   }
 
-  console.log(colors.green('success ✅  Done!'));
+  console.log(colors.green('[success] ✅  Done!'));
   process.exit(1);
 };
