@@ -21,6 +21,7 @@ const menus = {
       
       --maxChar, -c ...... maximum number of characters in a subtitle (required)
       --interval, -i ..... minimum time interval between subtitles (required)
+      --hideSkipped, -s .. hide skipped files
     `
 }
 
