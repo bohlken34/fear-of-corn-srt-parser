@@ -21,7 +21,8 @@ async function getJsonObjectFromFile(filePath) {
 
 function checkLength(fileObject, maxLength) {
   for (const subTitle of fileObject) {
-    const subLength = subTitle['Subtitle Text'].length;
+    const textToParse = subTitle['Subtitle Text'].trim();
+    const subLength = textToParse.length;
     if (subLength > maxLength) {
       error(
         colors.warn(
@@ -89,9 +90,9 @@ module.exports = async (args) => {
   for (let i = 0; i < files.length; i++) {
     try {
       if (i === 0) {
-        console.log(colors.blue(`\n === ${files[i]} ===`));
+        console.log(colors.dim(`\n=== ${files[i]} ===`));
       } else {
-        console.log(colors.blue(`=== ${files[i]} ===`));
+        console.log(colors.dim(`=== ${files[i]} ===`));
       }
       const fileObject = await getJsonObjectFromFile(files[i]);
       if (!isIterable(fileObject)) {
