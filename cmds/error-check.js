@@ -4,6 +4,8 @@ const { getFilesRecursively } = require('../utils/file-getter');
 const { subtract, format } = require('mathjs');
 const colors = require('colors/safe');
 const isIterable = require('../utils/is-iterable');
+let errorCount = 0;
+let filesWithErrors = [];
 
 colors.setTheme({
   warn: 'yellow',
@@ -18,7 +20,7 @@ async function getJsonObjectFromFile(filePath) {
   return await JSON.parse(fileContents);
 }
 
-function checkLength(fileObject, maxLength) {
+function checkLength(fileObject, maxLength, fileName) {
   for (const subTitle of fileObject) {
     const textToParse = subTitle['Subtitle Text'];
     const subLength = textToParse.length;
@@ -30,6 +32,11 @@ function checkLength(fileObject, maxLength) {
           ) +
           '😏',
       );
+      errorCount++;
+
+      if (!filesWithErrors.includes(fileName)) {
+        filesWithErrors.push(fileName);
+      }
     }
 
     if (testWhiteSpace(textToParse.charAt(0))) {
@@ -37,6 +44,11 @@ function checkLength(fileObject, maxLength) {
         colors.warn(`[warning] ➡️   `) +
           `Subtitle ${subTitle['Name']} has a whitespace character at the beginning.`,
       );
+      errorCount++;
+
+      if (!filesWithErrors.includes(fileName)) {
+        filesWithErrors.push(fileName);
+      }
     }
 
     if (testWhiteSpace(textToParse.slice(-1))) {
@@ -44,6 +56,11 @@ function checkLength(fileObject, maxLength) {
         colors.warn(`[warning] ⬅️   `) +
           `Subtitle ${subTitle['Name']} has a whitespace character at the end.`,
       );
+      errorCount++;
+
+      if (!filesWithErrors.includes(fileName)) {
+        filesWithErrors.push(fileName);
+      }
     }
   }
 }
@@ -53,7 +70,7 @@ const testWhiteSpace = (x) => {
   return whiteRegex.test(x.charAt(0));
 };
 
-function checkInterval(fileObject, minInterval) {
+function checkInterval(fileObject, minInterval, fileName) {
   for (let index = 0; index < fileObject.length; index++) {
     if (index === 0) {
       continue;
@@ -71,6 +88,11 @@ function checkInterval(fileObject, minInterval) {
             fileObject[index]['Name']
           } is ${formattedDiff}s`,
       );
+      errorCount++;
+
+      if (!filesWithErrors.includes(fileName)) {
+        filesWithErrors.push(fileName);
+      }
     }
   }
 }
@@ -117,13 +139,25 @@ module.exports = async (arguments_) => {
       } else {
         console.log(colors.dim(`=== ${file} ===`));
       }
-      checkLength(fileObject, maxChars);
-      checkInterval(fileObject, minInterval);
+      checkLength(fileObject, maxChars, file);
+      checkInterval(fileObject, minInterval, file);
     } catch (error_) {
       error(colors.error(error_), true);
     }
   }
 
-  console.log(colors.green('[success] ✅  Done!'));
+  const fileTotal = files.length;
+
+  console.log(colors.green(`[success] ✅  Done! ${fileTotal} files checked.`));
+
+  if (errorCount > 0) {
+    console.log(
+      '\n' +
+        colors.red(`${errorCount} errors `) +
+        colors.white(`in ${filesWithErrors.length} files:`),
+    );
+    console.log(colors.red(filesWithErrors.join('\n') + '\n'));
+  }
+
   process.exit(1);
 };
